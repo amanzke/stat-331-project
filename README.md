@@ -1,1 +1,1 @@
-read me :)
+Hello my project group. This is Addie
