@@ -17,17 +17,17 @@ The focus of our project is to research an association between inequality index 
 
 ### Data Sources
 
-- **Variable 1**: *Inequality Index* — downloaded from Gapminder ([link to source])
-- **Variable 2**: *Happiness Score* — downloaded from Gapminder ([link to source])
+- **Variable 1**: *Inequality Index* — downloaded from Gapminder ([https://data.worldbank.org/indicator/SI.POV.GINI])
+- **Variable 2**: *Happiness Score* — downloaded from Gapminder ([http://gapm.io/dhapiscore_whr])
 
-Indicate if you found original sources (e.g., World Bank, WHO) or not.
+The Inequality Index is originally sourced from World Bank.
+
 
 ### Variables
 
-- **Variable 1 (e.g., GDP per capita)**: Measured in USD, adjusted for inflation.
-- **Variable 2 (e.g., Life expectancy)**: Measured in years.
+- **Inequality Index**: Percent of inequality (percent deviation from the "ideal line", where every person in society has the same income). This is called the Gini Index. You can read more about this [here](https://en.wikipedia.org/wiki/Lorenz_curve).
 
-Describe each variable’s units, range, and general meaning.
+- **Happiness Score**: Measurement from 0 to 100, where subjects were asked to rank their current life satisfaction, where 0 is the worst possible life for the subject and 100 is the best.
 
 ---
 
