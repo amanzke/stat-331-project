@@ -38,7 +38,7 @@ State your hypothesis in terms of direction and strength.
 Example:
 > I hypothesize that there is a strong positive relationship between GDP per capita and life expectancy. Countries with higher economic output per person are more likely to have better healthcare systems, improved living standards, and longer life spans.
 
-Support your claim with at least one outside source (link or citation).
+> We hypothesize that there is a strong negative relationship between happiness score and inequality index. [A study](https://www.forbes.com/sites/johnjennings/2024/02/12/money-buys-happiness-after-all/) showed that happiness increases with wealth (up to a point), so in countries with more wealth inequality, more people will rate their happiness lower.
 
 ---
 
