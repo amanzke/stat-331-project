@@ -1,13 +1,15 @@
 ---
 title: "STAT 331 Final Project Proposal + Data"
-author: "Names" 
+author: "Adam Manzke, Rianna Lei, Addie Lilley, Hannah Goudz" 
 format: html
 ---
 
 ## Introduction
 
-Briefly introduce the focus of your project.  
+Briefly introduce the focus of your project.
 Mention the two quantitative variables from Gapminder that you selected, and why they are of interest.
+
+The focus of our project is to research an association between inequality index and happiness score. We're interested in these variables because we were fascinated by the premise of quantifying happiness, and we'd like to find out if wealth inequality is related.
 
 ---
 
@@ -15,8 +17,8 @@ Mention the two quantitative variables from Gapminder that you selected, and why
 
 ### Data Sources
 
-- **Variable 1**: *Name* — downloaded from Gapminder ([link to source])
-- **Variable 2**: *Name* — downloaded from Gapminder ([link to source])
+- **Variable 1**: *Inequality Index* — downloaded from Gapminder ([link to source])
+- **Variable 2**: *Happiness Score* — downloaded from Gapminder ([link to source])
 
 Indicate if you found original sources (e.g., World Bank, WHO) or not.
 
