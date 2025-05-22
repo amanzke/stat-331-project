@@ -1,5 +1,97 @@
 ---
-title: "project"
+title: "STAT 331 Final Project Proposal + Data"
+author: "Names" 
 format: html
 ---
 
+## Introduction
+
+Briefly introduce the focus of your project.  
+Mention the two quantitative variables from Gapminder that you selected, and why they are of interest.
+
+---
+
+## Data and Variables
+
+### Data Sources
+
+- **Variable 1**: *Name* — downloaded from Gapminder ([link to source])
+- **Variable 2**: *Name* — downloaded from Gapminder ([link to source])
+
+Indicate if you found original sources (e.g., World Bank, WHO) or not.
+
+### Variables
+
+- **Variable 1 (e.g., GDP per capita)**: Measured in USD, adjusted for inflation.
+- **Variable 2 (e.g., Life expectancy)**: Measured in years.
+
+Describe each variable’s units, range, and general meaning.
+
+---
+
+## Hypothesis
+
+State your hypothesis in terms of direction and strength.
+
+Example:
+> I hypothesize that there is a strong positive relationship between GDP per capita and life expectancy. Countries with higher economic output per person are more likely to have better healthcare systems, improved living standards, and longer life spans.
+
+Support your claim with at least one outside source (link or citation).
+
+---
+
+## Data Cleaning Process
+
+Describe each major cleaning step you performed in R:
+
+- Pivoting wide to long format using `pivot_longer()`
+- Converting year columns to integers
+- Joining datasets on `country` and `year`
+- Removing missing values with `drop_na()`
+- Any transformations (e.g., converting "1.1k" to `1100` if needed)
+
+Mention anything that may impact the analysis, such as limited data for certain countries or years.
+
+```{r}
+library(tidyverse)
+# Read data
+gdp <- read_csv("???")
+life <- read_csv("???.csv")
+
+# Pivot longer
+gdp_long <- gdp %>%
+  pivot_longer(cols = -country, names_to = "year", values_to = "gdp") %>%
+  mutate(year = as.integer(year))
+
+life_long <- life %>%
+  pivot_longer(cols = -country, names_to = "year", values_to = "life_exp") %>%
+  mutate(year = as.integer(year))
+
+# Join datasets
+gapminder_clean <- inner_join(gdp_long, life_long, by = c("country", "year"))
+
+# Optional: drop rows with missing data
+gapminder_clean <- gapminder_clean %>%
+  drop_na()
+
+##^^ EXAMPLE FORMAT 
+
+```
+
+
+---
+
+## Summary
+
+Wrap up this section by stating the final structure of your dataset.
+
+Example:
+> The cleaned dataset includes 150 countries and spans the years 1960 to 2020. Each row represents a country-year observation, with values for both GDP per capita and life expectancy.
+
+---
+
+## Citations
+
+- Gapminder: https://www.gapminder.org/data/
+- WHO report on social determinants of health: https://www.who.int/publications/i/item/9789241563970
+- Add any other articles or sources used to support your hypothesis.
