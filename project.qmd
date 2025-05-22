@@ -46,37 +46,39 @@ Example:
 
 Describe each major cleaning step you performed in R:
 
-- Pivoting wide to long format using `pivot_longer()`
-- Converting year columns to integers
-- Joining datasets on `country` and `year`
-- Removing missing values with `drop_na()`
-- Any transformations (e.g., converting "1.1k" to `1100` if needed)
+1. Pivoting wide to long format using `pivot_longer()`: creates new columns for year and score; necessary for joining the two data sets
+2. Converting year columns to integers: makes things way nicer
+3. Joining datasets on `country` and `year`: combines our two longer data sets with a left join, ensuring only years with happiness scores (happiness starts in 2004, inequality starts in 1963)
+4. Removing missing values with `drop_na()`: a nice thing to do for plotting later
 
-Mention anything that may impact the analysis, such as limited data for certain countries or years.
+As mentioned above, we're limiting our analysis to years 2004 through 2023, instead of using the full inequality score data set (which starts in 1963).
 
 ```{r}
 library(tidyverse)
 # Read data
-gdp <- read_csv("???")
-life <- read_csv("???.csv")
+ineq <- read_csv("inequality_index_gini.csv")
+happ <- read_csv("hapiscore_whr.csv")
 
 # Pivot longer
-gdp_long <- gdp %>%
-  pivot_longer(cols = -country, names_to = "year", values_to = "gdp") %>%
+ineq_long <- ineq |> 
+  pivot_longer(cols = -country,
+               names_to = "year",
+               values_to = "inequality_score") |> 
   mutate(year = as.integer(year))
 
-life_long <- life %>%
-  pivot_longer(cols = -country, names_to = "year", values_to = "life_exp") %>%
+happ_long <- happ |> 
+  pivot_longer(cols = -country,
+               names_to = "year",
+               values_to = "happ_score") |> 
   mutate(year = as.integer(year))
 
-# Join datasets
-gapminder_clean <- inner_join(gdp_long, life_long, by = c("country", "year"))
+# Join datasets - happiness starts at 2004 whereas ineq starts at 1963,
+# so only keep observations from 2004 onward
+gapminder_clean <- left_join(happ_long, ineq_long, by = c("country", "year"))
 
 # Optional: drop rows with missing data
-gapminder_clean <- gapminder_clean %>%
+gapminder_clean <- gapminder_clean |> 
   drop_na()
-
-##^^ EXAMPLE FORMAT 
 
 ```
 
