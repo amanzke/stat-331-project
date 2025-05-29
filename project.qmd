@@ -60,6 +60,7 @@ As mentioned above, we're limiting our analysis to years 2005 through 2023, inst
 library(tidyverse)
 library(knitr)
 library(kableExtra)
+library(broom)
 # Read data
 ineq <- read_csv("inequality_index_gini.csv")
 happ <- read_csv("hapiscore_whr.csv")
@@ -135,6 +136,23 @@ gapminder_anim <- gapminder_clean |>
 
 animate(gapminder_anim, nframes = 19, fps = 1)
 ```
+
+## Linear Regression
+
+We'll use the averaged data set from the earlier scatterplot. ***write this more nicely***
+
+```{r}
+gapminder_average_lm <- lm(avg_happ ~ avg_ineq,
+                           data = gapminder_average)
+
+gapminder_average_lm |> 
+  tidy()
+```
+
+The model is
+\begin{align}
+\widehat{happiness} & = 65.653-0.188\times inequality.
+\end{align}
 
 ## Citations
 
