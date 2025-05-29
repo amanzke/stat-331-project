@@ -133,7 +133,7 @@ gapminder_anim <- gapminder_clean |>
   transition_time(year) +
   ease_aes("linear")
 
-animate(gapminder_anim, nframes = 19, fps = 2)
+animate(gapminder_anim, nframes = 19, fps = 1)
 ```
 
 ## Citations
