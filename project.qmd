@@ -139,7 +139,7 @@ animate(gapminder_anim, nframes = 19, fps = 1)
 
 ## Linear Regression
 
-We'll use the averaged data set from the earlier scatterplot. ***write this more nicely***
+For our linear regression analysis, we will use the averaged data set from the earlier scatter plot, which contains an average inequality index per country from 2005 to 2023 as well as an average happiness score per country from 2005 to 2023. 
 
 ```{r}
 gapminder_average_lm <- lm(avg_happ ~ avg_ineq,
@@ -147,6 +147,8 @@ gapminder_average_lm <- lm(avg_happ ~ avg_ineq,
 
 gapminder_average_lm |> 
   tidy()
+
+glance(gapminder_average_lm)
 ```
 
 The model is
@@ -161,10 +163,21 @@ augment(gapminder_average_lm) |>
   mutate(var_fitted = var(.fitted),
          var_resp = var(avg_happ),
          var_resid = var(.resid),
-         r_square = var_fitted / var_resp)
-
-glance(gapminder_average_lm)
+         r_square = sprintf("%.2f%%",var_fitted / var_resp)) |> 
+  select(var_resp, var_fitted, var_resid, r_square) |> 
+  distinct() |> 
+  kable(digits = c(0, 1, 1, 0),
+        col.names = c("Response Values", "Fitted Values", "Residuals", "R-squared"),
+        caption = "Model Fit") |> 
+  kable_styling(full_width = FALSE, bootstrap_options = "striped") |> 
+  add_header_above(c("Variance in" = 3, " " =  1),
+                   bold = TRUE) |> 
+  row_spec(row = 0, bold = T, align = "c")
 ```
+
+
+Looking at our R-squared value, we can see that 2.09% of the variability in the response values is accounted for by our regression model. This is obviously a very small percentage of the overall variability, and thus, suggests that our model is not of very high quality. 
+
 
 ## Citations
 
