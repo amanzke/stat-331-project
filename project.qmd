@@ -163,10 +163,10 @@ augment(gapminder_average_lm) |>
   mutate(var_fitted = var(.fitted),
          var_resp = var(avg_happ),
          var_resid = var(.resid),
-         r_square = sprintf("%.2f%%",var_fitted / var_resp)) |> 
+         r_square = var_fitted / var_resp) |> 
   select(var_resp, var_fitted, var_resid, r_square) |> 
   distinct() |> 
-  kable(digits = c(0, 1, 1, 0),
+  kable(digits = c(2, 2, 2, 4),
         col.names = c("Response Values", "Fitted Values", "Residuals", "R-squared"),
         caption = "Model Fit") |> 
   kable_styling(full_width = FALSE, bootstrap_options = "striped") |> 
@@ -176,7 +176,7 @@ augment(gapminder_average_lm) |>
 ```
 
 
-Looking at our R-squared value, we can see that 2.09% of the variability in the response values is accounted for by our regression model. This is obviously a very small percentage of the overall variability, and thus, suggests that our model is not of very high quality. 
+Looking at our R-squared value, we can see that 2.1% of the variability in the response values is accounted for by our regression model. This is obviously a very small percentage of the overall variability, and thus, suggests that our model is not of very high quality. 
 
 
 ## Citations
