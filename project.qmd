@@ -14,6 +14,8 @@ execute:
   warning: false
 ---
 
+# Project Proposal + Data
+
 ## Introduction
 
 The focus of our project is to research an association between inequality index and happiness score. We're interested in these variables because we were fascinated by the premise of quantifying happiness, and we'd like to find out if wealth inequality is related.
@@ -56,6 +58,7 @@ As mentioned above, we're limiting our analysis to years 2004 through 2023, inst
 ```{r}
 #| message: false
 library(tidyverse)
+library(ggplot2)
 # Read data
 ineq <- read_csv("inequality_index_gini.csv")
 happ <- read_csv("hapiscore_whr.csv")
@@ -85,7 +88,6 @@ gapminder_clean <- gapminder_clean |>
 
 ```
 
-
 ---
 
 ## Summary
@@ -93,6 +95,24 @@ gapminder_clean <- gapminder_clean |>
 The cleaned dataset includes 134 countries and spans the years 2004 to 2023. Each row represents a country-year observation and includes values for both happpiness score and inequality index.
 
 ---
+
+# Linear Regression
+
+## Data Visualization
+
+```{r}
+gapminder_clean |> 
+  group_by(country) |> 
+  mutate(avg_happ = mean(happ_score),
+         avg_ineq = mean(inequality_score)) |> 
+  ggplot(aes(x = avg_ineq, y = avg_happ)) +
+  geom_jitter() +
+  geom_smooth(method = "lm") +
+  labs(x = "Average Inequality Index",
+       y = "Average Happiness Score",
+       title = "Average Inequality Index vs. Average Happiness Score",
+       subtitle = "For country, over all years (2004 - 2024)")
+```
 
 ## Citations
 
