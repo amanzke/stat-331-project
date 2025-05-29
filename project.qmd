@@ -6,6 +6,12 @@ format:
     embed-resources: true
     code-tools: true
     code-fold: true
+editor: source
+execute: 
+  error: true
+  echo: true
+  message: false
+  warning: false
 ---
 
 ## Introduction
