@@ -1,7 +1,11 @@
 ---
 title: "STAT 331 Final Project Proposal + Data"
 author: "Adam Manzke, Rianna Lei, Addie Lilley, Hannah Goudz" 
-format: html
+format:
+  html:
+    embed-resources: true
+    code-tools: true
+    code-fold: true
 ---
 
 ## Introduction
