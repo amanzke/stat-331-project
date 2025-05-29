@@ -53,12 +53,13 @@ The Inequality Index is originally sourced from World Bank.
 3. Joining datasets on `country` and `year`: combines our two longer data sets with a left join, ensuring only years with happiness scores (happiness starts in 2004, inequality starts in 1963)
 4. Removing missing values with `drop_na()`: a nice thing to do for plotting later
 
-As mentioned above, we're limiting our analysis to years 2004 through 2023, instead of using the full inequality score data set (which starts in 1963).
+As mentioned above, we're limiting our analysis to years 2005 through 2023, instead of using the full inequality score data set (which starts in 1963).
 
 ```{r}
 #| message: false
 library(tidyverse)
-library(ggplot2)
+library(knitr)
+library(kableExtra)
 # Read data
 ineq <- read_csv("inequality_index_gini.csv")
 happ <- read_csv("hapiscore_whr.csv")
@@ -79,7 +80,7 @@ happ_long <- happ |>
   mutate(year = as.integer(year))
 
 # Join datasets - happiness starts at 2004 whereas ineq starts at 1963,
-# so only keep observations from 2004 onward
+# so only keep observations from 2005 onward
 gapminder_clean <- left_join(happ_long, ineq_long, by = c("country", "year"))
 
 # Optional: drop rows with missing data
@@ -92,7 +93,7 @@ gapminder_clean <- gapminder_clean |>
 
 ## Summary
 
-The cleaned dataset includes 134 countries and spans the years 2004 to 2023. Each row represents a country-year observation and includes values for both happpiness score and inequality index.
+The cleaned dataset includes 134 countries and spans the years 2005 to 2023. Each row represents a country-year observation and includes values for both happpiness score and inequality index.
 
 ---
 
@@ -101,17 +102,38 @@ The cleaned dataset includes 134 countries and spans the years 2004 to 2023. Eac
 ## Data Visualization
 
 ```{r}
-gapminder_clean |> 
+gapminder_average <- gapminder_clean |> 
   group_by(country) |> 
   mutate(avg_happ = mean(happ_score),
-         avg_ineq = mean(inequality_score)) |> 
+         avg_ineq = mean(inequality_score))
+
+gapminder_average |> 
   ggplot(aes(x = avg_ineq, y = avg_happ)) +
   geom_jitter() +
   geom_smooth(method = "lm") +
   labs(x = "Average Inequality Index",
        y = "Average Happiness Score",
        title = "Average Inequality Index vs. Average Happiness Score",
-       subtitle = "For country, over all years (2004 - 2024)")
+       subtitle = "For country, over all years (2005 - 2023)")
+```
+
+```{r}
+library(gganimate)
+library(gifski)
+
+gapminder_anim <- gapminder_clean |> 
+  ggplot(aes(x = inequality_score, y = happ_score)) +
+  geom_jitter() +
+  labs(x = "Inequality Index",
+       y = "Happiness Score",
+       subtitle = "{frame_time}",
+       title = "Inequality Index vs. Happiness Score") +
+  theme(plot.subtitle = element_text(color = "steelblue", size = 14),
+        plot.title = element_text(hjust = 0.5)) +
+  transition_time(year) +
+  ease_aes("linear")
+
+animate(gapminder_anim, nframes = 19, fps = 2)
 ```
 
 ## Citations
