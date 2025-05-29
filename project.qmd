@@ -48,12 +48,11 @@ The Inequality Index is originally sourced from World Bank.
 
 ## Data Cleaning Process
 
-1. Pivoting wide to long format using `pivot_longer()`: creates new columns for year and score; necessary for joining the two data sets
-2. Converting year columns to integers: makes things way nicer
-3. Joining datasets on `country` and `year`: combines our two longer data sets with a left join, ensuring only years with happiness scores (happiness starts in 2004, inequality starts in 1963)
-4. Removing missing values with `drop_na()`: a nice thing to do for plotting later
+To prepare the data for analysis, we reshaped both datasets so that each row represents one country in a given year. We then combined the two sources by matching on country and year. Since happiness data only begins in 2005, we limited our analysis to the years 2005 through 2023. After merging the data, we excluded any rows where either the inequality index or the happiness score was missing.
 
-As mentioned above, we're limiting our analysis to years 2005 through 2023, instead of using the full inequality score data set (which starts in 1963).
+The original source of the inequality data is the World Bank. The happiness scores come from a Gapminder dataset that compiles data from the World Happiness Report. The happiness score reflects the average self-reported life satisfaction for individuals in each country, measured on a scale from 0 to 100.
+
+After removing missing values, the cleaned dataset included 134 countries with complete observations. We noted that most missing values occurred in earlier years and were more common among lower-income or smaller countries. This could introduce some bias if countries with less reliable reporting are systematically different.
 
 ```{r}
 #| message: false
@@ -102,6 +101,7 @@ The cleaned dataset includes 134 countries and spans the years 2005 to 2023. Eac
 
 ## Data Visualization
 
+The scatterplot below shows the relationship between average inequality index and average happiness score for each country. The downward trend indicates a slight negative relationship between the two variables.
 ```{r}
 gapminder_average <- gapminder_clean |> 
   group_by(country) |> 
@@ -117,6 +117,7 @@ gapminder_average |>
        title = "Average Inequality Index vs. Average Happiness Score",
        subtitle = "For country, over all years (2005 - 2023)")
 ```
+The animated plot shows how the relationship between inequality and happiness changes over time from 2005 to 2023. While variability exists year-to-year, the overall negative trend persists throughout the time period.
 
 ```{r}
 library(gganimate)
@@ -139,7 +140,7 @@ animate(gapminder_anim, nframes = 19, fps = 1)
 
 ## Linear Regression
 
-For our linear regression analysis, we will use the averaged data set from the earlier scatter plot, which contains an average inequality index per country from 2005 to 2023 as well as an average happiness score per country from 2005 to 2023. 
+To investigate the relationship between inequality and happiness, we computed the average inequality index and average happiness score for each country over the period 2005 to 2023. These average values were used to build a simple linear regression model, with happiness as the response variable and inequality as the explanatory variable.
 
 ```{r}
 gapminder_average_lm <- lm(avg_happ ~ avg_ineq,
@@ -156,7 +157,11 @@ The model is
 \widehat{happiness} & = 65.653-0.188\times inequality.
 \end{align}
 
+This equation suggests that for every one-point increase in the inequality index, a country’s average happiness score decreases by approximately 0.188 points. This negative association supports our hypothesis that countries with higher income inequality tend to report lower levels of happiness.
+
 ## Model Fit
+
+The table below summarizes the variance in the observed happiness scores, the fitted values from the regression model, and the model residuals. The R-squared value indicates that only a small proportion of the total variance is explained by inequality.
 
 ```{r}
 augment(gapminder_average_lm) |> 
@@ -176,7 +181,9 @@ augment(gapminder_average_lm) |>
 ```
 
 
-Looking at our R-squared value, we can see that 2.1% of the variability in the response values is accounted for by our regression model. This is obviously a very small percentage of the overall variability, and thus, suggests that our model is not of very high quality. 
+We evaluated the model's performance by examining how much of the variation in happiness scores it was able to explain. The total variance in happiness scores across countries was approximately 93, while the variance explained by the regression model was about 1.9. This leaves roughly 90.7 units of unexplained variance, resulting in an R-squared value of 0.021.
+
+This means that only 2.1% of the variation in average happiness scores can be explained by differences in income inequality. While the relationship is negative, as expected, the small R-squared value suggests that inequality alone is not a strong predictor of happiness. Other factors; such as health, education, political stability, and social support, are likely more influential and should be considered in future models.
 
 
 ## Citations
