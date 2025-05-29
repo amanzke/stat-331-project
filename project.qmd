@@ -154,6 +154,18 @@ The model is
 \widehat{happiness} & = 65.653-0.188\times inequality.
 \end{align}
 
+## Model Fit
+
+```{r}
+augment(gapminder_average_lm) |> 
+  mutate(var_fitted = var(.fitted),
+         var_resp = var(avg_happ),
+         var_resid = var(.resid),
+         r_square = var_fitted / var_resp)
+
+glance(gapminder_average_lm)
+```
+
 ## Citations
 
 - Gapminder: https://www.gapminder.org/data/
