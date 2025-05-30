@@ -18,7 +18,7 @@ execute:
 
 ## Introduction
 
-The focus of our project is to research an association between inequality index and happiness score. We're interested in these variables because we were fascinated by the premise of quantifying happiness, and we'd like to find out if wealth inequality is related.
+The focus of our project is to research whether there is an association between inequality index and happiness score. We're interested in these variables because we were fascinated by the premise of quantifying happiness, and we'd like to find out if wealth inequality is related.
 
 ---
 
@@ -34,9 +34,9 @@ The Inequality Index is originally sourced from World Bank.
 
 ### Variables
 
-- **Inequality Index**: Percent of inequality (percent deviation from the "ideal line", where every person in society has the same income). This is called the Gini Index. You can read more about this [here](https://en.wikipedia.org/wiki/Lorenz_curve).
+- **Inequality Index**: The percent of inequality (percent deviation from the "ideal line", where every person in society has the same income). This is called the Gini Index. You can read more about this [here](https://en.wikipedia.org/wiki/Lorenz_curve).
 
-- **Happiness Score**: Measurement from 0 to 100, where subjects were asked to rank their current life satisfaction, where 0 is the worst possible life for the subject and 100 is the best.
+- **Happiness Score**: A measurement from 0 to 100, where subjects were asked to rank their current life satisfaction, where 0 is the worst possible life for the subject and 100 is the best based on the Cantril life ladder from the gapminder data [^1]. The happiness score is based on an the weighted average score using the country's population as weights. 
 
 ---
 
@@ -48,7 +48,14 @@ The Inequality Index is originally sourced from World Bank.
 
 ## Data Cleaning Process
 
+<<<<<<< Updated upstream
 To prepare the data for analysis, we reshaped both datasets so that each row represents one country in a given year. We then combined the two sources by matching on country and year. Since happiness data only begins in 2005, we limited our analysis to the years 2005 through 2023. After merging the data, we excluded any rows where either the inequality index or the happiness score was missing.
+=======
+1. We pivoted the data from a wide to long format which created new columns for year and score. This was necessary for joining the two data sets later on in our data cleaning process.
+2. We then coonverted the year columns to integers, making the data more readable.
+3. Next, we joined the datasets of happiness score and inequality index on the country and the year which combines our two longer data sets, ensuring only years with happiness scores (happiness starts in 2004, inequality starts in 1963).
+4. Lastly, we removed any missing values, making it easier to plot our data later on. 
+>>>>>>> Stashed changes
 
 The original source of the inequality data is the World Bank. The happiness scores come from a Gapminder dataset that compiles data from the World Happiness Report. The happiness score reflects the average self-reported life satisfaction for individuals in each country, measured on a scale from 0 to 100.
 
@@ -93,7 +100,7 @@ gapminder_clean <- gapminder_clean |>
 
 ## Summary
 
-The cleaned dataset includes 134 countries and spans the years 2005 to 2023. Each row represents a country-year observation and includes values for both happpiness score and inequality index.
+The cleaned dataset includes 134 countries and spans the years 2005 to 2023. Each row represents a country-year observation and includes values for both happpiness score and inequality index. When removing missing values, it removed 1,978 missing observations, leaving us with 1,138 total observations in our cleaning data set.The pattern in the missing values was that in the earlier years especially, many countries did not have any data on the happiness score, therefore those earlier years had missing data.
 
 ---
 
@@ -188,6 +195,6 @@ This means that only 2.1% of the variation in average happiness scores can be ex
 
 ## Citations
 
-- Gapminder: https://www.gapminder.org/data/
-- WHO report on social determinants of health: https://www.who.int/publications/i/item/9789241563970
-- Add any other articles or sources used to support your hypothesis.
+[^1]: Gapminder: https://www.gapminder.org/data/
+[2] WHO report on social determinants of health: https://www.who.int/publications/i/item/9789241563970
+
