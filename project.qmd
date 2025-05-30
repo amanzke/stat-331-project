@@ -42,7 +42,7 @@ The Inequality Index is originally sourced from World Bank.
 
 ## Hypothesis
 
-> We hypothesize that there is a strong negative relationship between happiness score and inequality index. [A study](https://www.forbes.com/sites/johnjennings/2024/02/12/money-buys-happiness-after-all/) showed that happiness increases with wealth (up to a point), so in countries with more wealth inequality, more people will rate their happiness lower.
+> We hypothesize that there is a strong negative relationship between happiness score and inequality index. [A study](https://www.forbes.com/sites/johnjennings/2024/02/12/money-buys-happiness-after-all/) showed that happiness increases with wealth (up to a point), so in countries with more wealth inequality, more people will rate their happiness lower.[^2]
 
 ---
 
@@ -192,5 +192,6 @@ This means that only 2.1% of the variation in average happiness scores can be ex
 ## Citations
 
 [^1]: Gapminder: https://www.gapminder.org/data/
-2. WHO report on social determinants of health: https://www.who.int/publications/i/item/9789241563970
+
+[^2]: WHO report on social determinants of health: https://www.who.int/publications/i/item/9789241563970
 
