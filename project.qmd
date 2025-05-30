@@ -98,6 +98,8 @@ The cleaned dataset includes 134 countries and spans the years 2005 to 2023. Eac
 
 # Linear Regression
 
+Linear regression is a statistical technique used to analyze the relationship between a dependent variable and the independent variable. Using a simple linear regression, we are testing whether there is a relationship between the average happiness score and inequality index. 
+
 ## Data Visualization
 
 The scatterplot below shows the relationship between average inequality index and average happiness score for each country. The downward trend indicates a slight negative relationship between the two variables.
@@ -146,9 +148,11 @@ gapminder_average_lm <- lm(avg_happ ~ avg_ineq,
                            data = gapminder_average)
 
 gapminder_average_lm |> 
-  tidy()
+  tidy() |> 
+  kable()
 
-glance(gapminder_average_lm)
+glance(gapminder_average_lm) |> 
+  kable()
 ```
 
 The model is
@@ -188,5 +192,5 @@ This means that only 2.1% of the variation in average happiness scores can be ex
 ## Citations
 
 [^1]: Gapminder: https://www.gapminder.org/data/
-[2] WHO report on social determinants of health: https://www.who.int/publications/i/item/9789241563970
+2. WHO report on social determinants of health: https://www.who.int/publications/i/item/9789241563970
 
