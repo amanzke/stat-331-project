@@ -215,7 +215,8 @@ fold_lm <- function(fold_number, data){
   test_dat <- data |> 
     filter(fold_random == fold_number)
   
-  model <- lm(avg_happ ~ avg_ineq, data = data)
+
+  model <- lm(avg_happ ~ avg_ineq, data = train_dat)
   
   return(var(predict(model, newdata = test_dat)) / var(test_dat$avg_happ))
   
@@ -227,6 +228,22 @@ r_sq <- map_dbl(.x = 1:10, .f = ~ fold_lm(.x, gapminder_average))
 
 ## Plot the Results
 
+The plot below shows the distribution of the cross-validated $R^2$ values across 10 folds. We also include a dashed red line indicating the mean $R^2$ value to help assess overall model performance.
+
+```{r}
+tibble(r_sq) |> 
+  ggplot(aes(x = r_sq)) +
+  geom_histogram(bins = 10, fill = "steelblue", color = "white") +
+  geom_vline(aes(xintercept = mean(r_sq)), color = "red", linetype = "dashed") +
+  labs(title = "Distribution of Cross-Validated R² Values",
+       x = "R²",
+       y = "Count",
+       subtitle = paste("Mean R² =", round(mean(r_sq), 3))) +
+  theme_minimal()
+```
+
+
+The distribution of $R^2$ values across folds is relatively tight, with most values clustering near 0.02. This consistency suggests that the model's performance is stable, although weak in explanatory power. The low mean $R^2$ confirms that inequality alone is not a strong predictor of happiness, supporting our earlier interpretation of the linear regression model.
 
 
 ## Citations
