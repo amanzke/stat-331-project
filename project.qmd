@@ -245,6 +245,13 @@ tibble(r_sq) |>
 
 The distribution of $R^2$ values across folds is relatively tight, with most values clustering near 0.02. This consistency suggests that the model's performance is stable, although weak in explanatory power. The low mean $R^2$ confirms that inequality alone is not a strong predictor of happiness, supporting our earlier interpretation of the linear regression model.
 
+## Conclusion
+
+This project explored the relationship between income inequality and national happiness levels using data from Gapminder. We hypothesized that higher inequality would correspond with lower happiness. Our regression model supported this hypothesis directionally but revealed a weak relationship, with inequality explaining only about 2% of the variation in happiness scores. 
+
+Cross-validation confirmed the model’s consistency, with a low but stable $R^2$ across all folds. This suggests that while inequality may play a role, it is not a strong standalone predictor of happiness. Other factors—such as health care, education, governance, or social support—likely play a larger role and would be valuable to include in future models.
+
+Overall, this analysis demonstrates the importance of multivariable modeling in understanding complex social phenomena.
 
 ## Citations
 
