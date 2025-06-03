@@ -106,7 +106,7 @@ The scatterplot below shows the relationship between average inequality index an
 ```{r}
 gapminder_average <- gapminder_clean |> 
   group_by(country) |> 
-  mutate(avg_happ = mean(happ_score),
+  summarise(avg_happ = mean(happ_score),
          avg_ineq = mean(inequality_score))
 
 gapminder_average |> 
@@ -187,6 +187,46 @@ augment(gapminder_average_lm) |>
 We evaluated the model's performance by examining how much of the variation in happiness scores it was able to explain. The total variance in happiness scores across countries was approximately 93, while the variance explained by the regression model was about 1.9. This leaves roughly 90.7 units of unexplained variance, resulting in an R-squared value of 0.021.
 
 This means that only 2.1% of the variation in average happiness scores can be explained by differences in income inequality. While the relationship is negative, as expected, the small R-squared value suggests that inequality alone is not a strong predictor of happiness. Other factors; such as health, education, political stability, and social support, are likely more influential and should be considered in future models.
+
+
+# Cross Validation
+
+## Implement k-fold cross validation
+
+Since we have 134 observations in our data set and we want at least 10 samples per fold, we have a practical upper limit of 13 folds. To make things simpler, we will set $k=10$.
+
+First we will randomly partition our data into 10 folds.
+
+```{r}
+k <- 10
+n <- 134
+set.seed(679)
+
+# from 10.1 lecture slides
+gapminder_average <- gapminder_average |> 
+  mutate(fold_random = sample(rep_len(1:k, length.out = n),
+                              size = n))
+
+fold_lm <- function(fold_number, data){
+  stopifnot(k >= 1 & k <= 10)
+  
+  train_dat <- data |> 
+    filter(fold_random != fold_number)
+  test_dat <- data |> 
+    filter(fold_random == fold_number)
+  
+  model <- lm(avg_happ ~ avg_ineq, data = data)
+  
+  return(var(predict(model, newdata = test_dat)) / var(test_dat$avg_happ))
+  
+}
+
+r_sq <- map_dbl(.x = 1:10, .f = ~ fold_lm(.x, gapminder_average))
+
+```
+
+## Plot the Results
+
 
 
 ## Citations
