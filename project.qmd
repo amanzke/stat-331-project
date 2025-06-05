@@ -20,8 +20,6 @@ execute:
 
 The focus of our project is to research whether there is an association between inequality index and happiness score. We're interested in these variables because we were fascinated by the premise of quantifying happiness, and we'd like to find out if wealth inequality is related.
 
----
-
 ## Data and Variables
 
 ### Data Sources
@@ -29,30 +27,24 @@ The focus of our project is to research whether there is an association between 
 - **Variable 1**: *Inequality Index* — downloaded from Gapminder ([https://data.worldbank.org/indicator/SI.POV.GINI])
 - **Variable 2**: *Happiness Score* — downloaded from Gapminder ([http://gapm.io/dhapiscore_whr])
 
-The Inequality Index is originally sourced from World Bank.
+The Inequality Index is originally sourced from World Bank. The happiness score data also originates from World Bank, but Gapminder does not provide a link to it.
 
 
 ### Variables
 
 - **Inequality Index**: The percent of inequality (percent deviation from the "ideal line", where every person in society has the same income). This is called the Gini Index. You can read more about this [here](https://en.wikipedia.org/wiki/Lorenz_curve).
 
-- **Happiness Score**: A measurement from 0 to 100, where subjects were asked to rank their current life satisfaction, where 0 is the worst possible life for the subject and 100 is the best based on the Cantril life ladder from the gapminder data [^1]. The happiness score is based on an the weighted average score using the country's population as weights. 
-
----
+- **Happiness Score**: A measurement from 0 to 100, where subjects were asked to rank their current life satisfaction, where 0 is the worst possible life for the subject and 100 is the best based on the Cantril life ladder from the gapminder data. The happiness score is based on an the weighted average score using the country's population as weights. 
 
 ## Hypothesis
 
-> We hypothesize that there is a strong negative relationship between happiness score and inequality index. [A study](https://www.forbes.com/sites/johnjennings/2024/02/12/money-buys-happiness-after-all/) showed that happiness increases with wealth (up to a point), so in countries with more wealth inequality, more people will rate their happiness lower.[^2]
-
----
+> We hypothesize that there is a strong negative relationship between happiness score and inequality index. A study discussed in a Forbes article (Jennings 2024) showed that happiness increases with wealth (up to a point), so in countries with more wealth inequality, more people will rate their happiness lower.
 
 ## Data Cleaning Process
 
-To prepare the data for analysis, we reshaped both datasets so that each row represents one country in a given year. We then combined the two sources by matching by the country and year. Since happiness data only begins in 2005, we limited our analysis to the years 2005 through 2023. After merging the data, we excluded any rows where either the inequality index or the happiness score was missing.
+To prepare the data for analysis, we reshaped both data sets so that each row represents one country in a given year. We then joined the two sources by matching by the country and year. Since happiness data only begins in 2005, we limited our analysis to the years 2005 through 2023. After joining the data, we excluded any rows where either the inequality index or the happiness score was missing.
 
-The original source of the inequality data is the World Bank. The happiness scores come from a Gapminder dataset that compiles data from the World Happiness Report. The happiness score reflects the average self-reported life satisfaction for individuals in each country, measured on a scale from 0 to 100.
-
-After removing missing values, the cleaned dataset included 134 countries with complete observations. We noted that most missing values occurred in earlier years and were more common among lower-income or smaller countries. This could introduce some bias if countries with less reliable reporting are systematically different.
+After removing missing values, the cleaned data set included 134 countries with complete observations. We noted that most missing values occurred in earlier years and were more common among lower-income or smaller countries. This could introduce some bias if countries with less reliable reporting are systematically different.
 
 ```{r}
 #| message: false
@@ -89,11 +81,10 @@ gapminder_clean <- gapminder_clean |>
 
 ```
 
----
-
 ## Summary
 
 The cleaned dataset includes 134 countries and spans the years 2005 to 2023. Each row represents a country-year observation and includes values for both happpiness score and inequality index. When removing missing values, it removed 1,978 missing observations, leaving us with 1,138 total observations in our cleaned data set.
+
 ---
 
 # Linear Regression
@@ -102,7 +93,6 @@ Linear regression is a statistical technique used to analyze the relationship be
 
 ## Data Visualization
 
-The scatterplot below shows the relationship between average inequality index and average happiness score for each country. The downward trend indicates a slight negative relationship between the two variables.
 ```{r}
 gapminder_average <- gapminder_clean |> 
   group_by(country) |> 
@@ -116,9 +106,10 @@ gapminder_average |>
   labs(x = "Average Inequality Index",
        y = "Average Happiness Score",
        title = "Average Inequality Index vs. Average Happiness Score",
-       subtitle = "For country, over all years (2005 - 2023)")
+       subtitle = "For each country, over all years (2005 - 2023)")
 ```
-The animated plot shows how the relationship between inequality and happiness changes over time from 2005 to 2023. While variability exists year-to-year, the overall negative trend persists throughout the time period.
+
+The scatterplot above shows the relationship between average inequality index and average happiness score for each country. The downward trend indicates a slight negative relationship between the two variables.
 
 ```{r}
 library(gganimate)
@@ -139,32 +130,34 @@ gapminder_anim <- gapminder_clean |>
 animate(gapminder_anim, nframes = 19, fps = 1)
 ```
 
-## Linear Regression
+The animated plot above shows how the relationship between inequality and happiness changes over time from 2005 to 2023. While variability exists year-to-year, the overall negative trend persists throughout the time period.
 
-To investigate the relationship between inequality and happiness, we computed the average inequality index and average happiness score for each country over the period 2005 to 2023. These average values were used to build a simple linear regression model, with happiness as the response variable and inequality as the explanatory variable.
+## Apply Linear Regression
+
+To investigate the relationship between inequality and happiness, we computed the average inequality index and average happiness score for each country over the period 2005 to 2023. These average values are reflected in the scatterplot in the previous section. We used these values to build a simple linear regression model, with happiness as the response variable and inequality as the explanatory variable.
 
 ```{r}
 gapminder_average_lm <- lm(avg_happ ~ avg_ineq,
                            data = gapminder_average)
+```
+
+```{r}
+#| eval: false
 
 gapminder_average_lm |> 
-  tidy() |> 
-  kable()
-
-glance(gapminder_average_lm) |> 
-  kable()
+  tidy()
 ```
 
 The model is
 \begin{align}
-\widehat{happiness} & = 65.653-0.188\times inequality.
+\widehat{happiness} & = 67.630-0.357\times inequality.
 \end{align}
 
-This equation suggests that for every one-point increase in the inequality index, a country’s average happiness score decreases by approximately 0.188 points. This negative association supports our hypothesis that countries with higher income inequality tend to report lower levels of happiness.
+This equation suggests that for every one-point increase in the inequality index, a country’s average happiness score decreases by approximately 0.357 points. This negative association supports our hypothesis that countries with higher income inequality tend to report lower levels of happiness.
 
 ## Model Fit
 
-The table below summarizes the variance in the observed happiness scores, the fitted values from the regression model, and the model residuals. The R-squared value indicates that only a small proportion of the total variance is explained by inequality.
+The table below summarizes the variance in the observed happiness scores, the fitted values from the regression model, and the model residuals. The $R^2$ value indicates that only a small proportion of the total variance is explained by inequality.
 
 ```{r}
 augment(gapminder_average_lm) |> 
@@ -184,12 +177,15 @@ augment(gapminder_average_lm) |>
 ```
 
 
-We evaluated the model's performance by examining how much of the variation in happiness scores it was able to explain. The total variance in happiness scores across countries was approximately 93, while the variance explained by the regression model was about 1.9. This leaves roughly 90.7 units of unexplained variance, resulting in an R-squared value of 0.021.
+We evaluated the model's performance by examining how much of the variation in happiness scores it was able to explain. The total variance in happiness scores across countries was approximately 115.76, while the variance explained by the regression model was about 6.67. This leaves roughly 109.09 units of unexplained variance, resulting in an $R^2$ value of 0.0576.
 
-This means that only 2.1% of the variation in average happiness scores can be explained by differences in income inequality. While the relationship is negative, as expected, the small R-squared value suggests that inequality alone is not a strong predictor of happiness. Other factors; such as health, education, political stability, and social support, are likely more influential and should be considered in future models.
+This means that only 5.76% of the variation in average happiness scores can be explained by differences in income inequality. While the relationship is negative, as expected, the small $R^2$ value suggests that inequality alone is not a strong predictor of happiness. Other factors; such as health, education, political stability, and social support, are likely more influential and should be considered in future models.
 
+---
 
 # Cross Validation
+
+$k$-fold cross-validation expands the test/train idea for model validation by using all of the observations for validation, rather than just one subset. It works by randomly subsetting the observations into $k$ folds, training the model on $k-1$ folds, and testing on the remaining fold. This process is repeated for all folds, meaning the model is fit and tested $k$ times. The final performance measure of the model is the average of the $k$ performance measures. Here, our performance measure is the $R^2$ statistic.
 
 ## Implement k-fold cross validation
 
@@ -243,7 +239,7 @@ tibble(r_sq) |>
 ```
 
 
-The distribution of $R^2$ values across folds is relatively tight, with most values clustering near 0.02. This consistency suggests that the model's performance is stable, although weak in explanatory power. The low mean $R^2$ confirms that inequality alone is not a strong predictor of happiness, supporting our earlier interpretation of the linear regression model.
+The distribution of $R^2$ values across folds is relatively tight, with most values clustering near 0.02. This consistency suggests that the model's performance is stable, although weak in explanatory power. The low mean $R^2$ confirms that inequality alone is not a strong predictor of happiness, supporting our earlier interpretation of the linear regression model. Furthermore, the original $R^2$ found from the full data set (0.0576) is fairly close to the average $R^2$ found from the cross-validation, so we have no strong evidence of overfitting.
 
 ## Conclusion
 
@@ -253,9 +249,13 @@ Cross-validation confirmed the model’s consistency, with a low but stable $R^2
 
 Overall, this analysis demonstrates the importance of multivariable modeling in understanding complex social phenomena.
 
+---
+
 ## Citations
 
-[^1]: Gapminder: https://www.gapminder.org/data/
+*GINI Index.* Gapminder. https://data.worldbank.org/indicator/SI.POV.GINI
 
-[^2]: WHO report on social determinants of health: https://www.who.int/publications/i/item/9789241563970
+*WHR Happiness Score.* Gapminder. http://gapm.io/dhapiscore_whr
+
+Jennings, J. (2024, June 3). *More money increases happiness beyond $75,000.* Forbes. https://www.forbes.com/sites/johnjennings/2024/02/12/money-buys-happiness-after-all/
 
