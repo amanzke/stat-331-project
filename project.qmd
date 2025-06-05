@@ -250,6 +250,10 @@ Cross-validation confirmed the model’s consistency, with a low but stable $R^2
 
 Overall, this analysis demonstrates the importance of multivariable modeling in understanding complex social phenomena.
 
+### Github Repository
+
+All of the code and resources for this project can be found [here](https://github.com/amanzke/stat-331-project).
+
 ---
 
 ## Citations
