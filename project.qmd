@@ -191,7 +191,7 @@ $k$-fold cross-validation expands the test/train idea for model validation by us
 
 Since we have 134 observations in our data set and we want at least 10 samples per fold, we have a practical upper limit of 13 folds. To make things simpler, we will set $k=10$.
 
-First we will randomly partition our data into 10 folds.
+We start by randomly subsetting the data into 10 folds, giving each observation a number between one and ten. For each iteration, we separate the data into a training set and a test set, and fit the model to the training set. We generate predicted values from the test set, and record the $R^2$ in a vector.
 
 ```{r}
 k <- 10
