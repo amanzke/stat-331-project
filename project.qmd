@@ -14,9 +14,8 @@ execute:
   warning: false
 ---
 
-# Project Proposal + Data
 
-## Introduction
+# Introduction
 
 The focus of our project is to research whether there is an association between inequality index and happiness score. We're interested in these variables because we were fascinated by the premise of quantifying happiness, and we'd like to find out if wealth inequality is related.
 
@@ -24,8 +23,8 @@ The focus of our project is to research whether there is an association between 
 
 ### Data Sources
 
-- **Variable 1**: *Inequality Index* — downloaded from Gapminder ([https://data.worldbank.org/indicator/SI.POV.GINI])
-- **Variable 2**: *Happiness Score* — downloaded from Gapminder ([http://gapm.io/dhapiscore_whr])
+- **Variable 1**: *Inequality Index* — [downloaded from Gapminder](https://data.worldbank.org/indicator/SI.POV.GINI)
+- **Variable 2**: *Happiness Score* — [downloaded from Gapminder](http://gapm.io/dhapiscore_whr)
 
 The Inequality Index is originally sourced from World Bank. The happiness score data also originates from World Bank, but Gapminder does not provide a link to it.
 
@@ -34,13 +33,13 @@ The Inequality Index is originally sourced from World Bank. The happiness score 
 
 - **Inequality Index**: The percent of inequality (percent deviation from the "ideal line", where every person in society has the same income). This is called the Gini Index. You can read more about this [here](https://en.wikipedia.org/wiki/Lorenz_curve).
 
-- **Happiness Score**: A measurement from 0 to 100, where subjects were asked to rank their current life satisfaction, where 0 is the worst possible life for the subject and 100 is the best based on the Cantril life ladder from the gapminder data. The happiness score is based on an the weighted average score using the country's population as weights. 
+- **Happiness Score**: A measurement from 0 to 100, where subjects were asked to rank their current life satisfaction, where 0 is the worst possible life for the subject and 100 is the best based on the Cantril life ladder from the Gapminder data. The happiness score is based on an the weighted average score using the country's population as weights.
 
 ## Hypothesis
 
 > We hypothesize that there is a strong negative relationship between happiness score and inequality index. A study discussed in a Forbes article (Jennings 2024) showed that happiness increases with wealth (up to a point), so in countries with more wealth inequality, more people will rate their happiness lower.
 
-## Data Cleaning Process
+# Data Cleaning Process
 
 To prepare the data for analysis, we reshaped both data sets so that each row represents one country in a given year. We then joined the two sources by matching by the country and year. Since happiness data only begins in 2005, we limited our analysis to the years 2005 through 2023. After joining the data, we excluded any rows where either the inequality index or the happiness score was missing.
 
@@ -87,7 +86,7 @@ The cleaned dataset includes 134 countries and spans the years 2005 to 2023. Eac
 
 ---
 
-# Linear Regression
+# Modeling the Relationship between Inequality Index and Happiness Score
 
 Linear regression is a statistical technique used to analyze the relationship between a dependent variable and the independent variable. Using a simple linear regression, we are testing whether there is a relationship between the average happiness score and inequality index. 
 
@@ -241,7 +240,9 @@ tibble(r_sq) |>
 
 The distribution of $R^2$ values across folds is relatively tight, with most values clustering near 0.02. This consistency suggests that the model's performance is stable, although weak in explanatory power. The low mean $R^2$ confirms that inequality alone is not a strong predictor of happiness, supporting our earlier interpretation of the linear regression model. Furthermore, the original $R^2$ found from the full data set (0.0576) is fairly close to the average $R^2$ found from the cross-validation, so we have no strong evidence of overfitting.
 
-## Conclusion
+---
+
+# Conclusion
 
 This project explored the relationship between income inequality and national happiness levels using data from Gapminder. We hypothesized that higher inequality would correspond with lower happiness. Our regression model supported this hypothesis directionally but revealed a weak relationship, with inequality explaining only about 5% of the variation in happiness scores. 
 
